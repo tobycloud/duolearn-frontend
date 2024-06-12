@@ -1,9 +1,10 @@
 import { Alert, Button, Center, Container, Flex, Title } from "@mantine/core";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { userSignInOAuth2 } from "../database";
+import { useAuth } from "../contexts/auth";
 
 export function LoginPage() {
+  const { userSignInOAuth2 } = useAuth();
   const [errorDuringSignIn, setErrorDuringSignIn] = React.useState<
     string | null
   >(null);

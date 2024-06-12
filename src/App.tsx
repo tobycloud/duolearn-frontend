@@ -1,9 +1,11 @@
 import { createTheme, MantineProvider } from "@mantine/core";
-import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
 import { Wrapper } from "./components/wrapper";
+import { PocketBaseProvider } from "./contexts/pocketbase";
 import { HomePage } from "./routes/Home";
 import { LoginPage } from "./routes/Login";
+import { AuthProvider } from "./contexts/auth";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,11 @@ const theme = createTheme({
 function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <RouterProvider router={router} />
+      <PocketBaseProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </PocketBaseProvider>
     </MantineProvider>
   );
 }

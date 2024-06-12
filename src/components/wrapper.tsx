@@ -11,25 +11,24 @@ import {
   Image,
   Menu,
   rem,
-  useMantineColorScheme
+  useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconMoonStars,
   IconSettings,
   IconSun,
-  IconTrash
+  IconTrash,
 } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration } from "react-router-dom";
 import Logo from "../assets/logo.svg";
-import { checkAuth, getAvatar, getCurrentAuthUser, logout } from "../database";
 import { CreateModal } from "./CreateModal";
+import { useAuth } from "../contexts/auth";
+import { User } from "../database/model";
 export function Wrapper() {
   const [opened, { toggle }] = useDisclosure();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
-
-  console.log(opened);
 
   return (
     <AppShell
@@ -60,7 +59,7 @@ export function Wrapper() {
               justify="space-between"
               align="center"
             >
-              <NavbarOptions opened={opened}></NavbarOptions>
+              <NavbarOptions opened={opened} toggle={toggle}></NavbarOptions>
             </Flex>
 
             <ActionIcon
@@ -82,7 +81,7 @@ export function Wrapper() {
       <AppShell.Navbar p="md">
         {opened && (
           <Container>
-            <NavbarOptions opened={opened}></NavbarOptions>
+            <NavbarOptions opened={opened} toggle={toggle}></NavbarOptions>
           </Container>
         )}
       </AppShell.Navbar>
@@ -94,19 +93,25 @@ export function Wrapper() {
   );
 }
 
-function NavbarOptions({ opened }: { opened: boolean }) {
-  const auth = checkAuth();
+function NavbarOptions({
+  opened,
+  toggle,
+}: {
+  opened: boolean;
+  toggle: () => void;
+}) {
+  const user = useAuth().user;
   return (
     <>
-      {auth ? (
+      {user ? (
         <>
           <CreateModal></CreateModal>
-          <ProfileButton opened={opened}></ProfileButton>
+          <ProfileButton opened={opened} user={user}></ProfileButton>
         </>
       ) : (
         <>
           <Box component={Link} to="/login">
-            <Button>Login / Signup</Button>
+            <Button onClick={() => opened && toggle()}>Login / Signup</Button>
           </Box>
         </>
       )}
@@ -114,14 +119,16 @@ function NavbarOptions({ opened }: { opened: boolean }) {
   );
 }
 
-function ProfileButton({ opened }: { opened: boolean }) {
+function ProfileButton({ opened, user }: { opened: boolean; user: User }) {
+  const { logout, getAvatar } = useAuth();
+  if (!user) return <></>;
   return (
     <>
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <Center>
             <Avatar
-              src={getAvatar(getCurrentAuthUser())}
+              src={getAvatar(user)}
               {...(opened ? { my: 10 } : { mx: 10 })}
             />
           </Center>
@@ -144,7 +151,9 @@ function ProfileButton({ opened }: { opened: boolean }) {
               <IconTrash style={{ width: rem(14), height: rem(14) }} />
             }
           >
-            <Button variant="transparent" onClick={() => logout()}>Logout</Button>
+            <Button variant="transparent" onClick={() => logout()}>
+              Logout
+            </Button>
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
