@@ -16,7 +16,7 @@ export function PostCard({ post }: { post: Post }) {
 
       <Group justify="space-between" mt="md" mb="xs">
         <Text fw={500}>{post.title}</Text>
-        <Badge color="pink">{post.author}</Badge>
+        <Badge color="pink">Posted by {post.fullAuthor.username}</Badge>
       </Group>
 
       <Text

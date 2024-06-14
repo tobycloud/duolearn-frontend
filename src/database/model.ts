@@ -23,7 +23,7 @@ export interface Post extends RecordModel {
     comments: string[]
     fullComments?: Comment[]
     thumbnail?: string
-    fullAuthor?: User
+    fullAuthor: User
 }
 
 export interface Comment extends RecordModel {

@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { usePocketBase } from "./pocketbase";
 import { Post, Comment, User } from "../database/model";
 
-export type GetSinglePostResult = Post & { fullComments: Comment[]; fullAuthor: User };
+export type GetSinglePostResult = Post & {
+  fullComments: Comment[];
+  fullAuthor: User;
+};
 
 export interface PostContextType {
   posts: Post[];
-  getPost: (
-    id: string
-  ) => Promise<GetSinglePostResult | undefined>;
+  getPost: (id: string) => Promise<GetSinglePostResult | undefined>;
   fetchPosts: (page: number) => Promise<Post[]>;
   setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 }
@@ -56,6 +57,13 @@ export function PostProvider({ children }: { children: React.ReactNode }) {
         .getList<Post>(page, LimitOfFetch, {
           sort: "-created",
         });
+      for (const post of posts.items) {
+        const author = await pocketbase
+          .collection("users")
+          .getOne<User>(post.author);
+        post.fullAuthor = author;
+      }
+
       setPosts(posts.items);
       return posts.items;
     },
