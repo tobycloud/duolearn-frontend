@@ -1,0 +1,1 @@
+export const pocketbaseUrl = "https://duolearn-pocketbase.tobycm.dev";

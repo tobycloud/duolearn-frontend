@@ -24,7 +24,6 @@ export const AuthContext = React.createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<User | null>(null);
-  console.log(user);
   const [token, setToken] = React.useState<string | null>(null);
 
   const pocketBase = usePocketBase();

@@ -1,8 +1,9 @@
 import React from "react";
 import PocketBase from "pocketbase";
+import { pocketbaseUrl } from "../constants";
 
 export const PocketBaseContext = React.createContext<PocketBase>(
-  new PocketBase("https://duolearn-pocketbase.tobycm.dev")
+  new PocketBase(pocketbaseUrl)
 );
 
 export function usePocketBase() {
@@ -15,9 +16,7 @@ export function PocketBaseProvider({
   children: React.ReactNode;
 }) {
   return (
-    <PocketBaseContext.Provider
-      value={new PocketBase("https://duolearn-pocketbase.tobycm.dev")}
-    >
+    <PocketBaseContext.Provider value={new PocketBase(pocketbaseUrl)}>
       {children}
     </PocketBaseContext.Provider>
   );

@@ -6,6 +6,8 @@ import { PocketBaseProvider } from "./contexts/pocketbase";
 import { HomePage } from "./routes/Home";
 import { LoginPage } from "./routes/Login";
 import { AuthProvider } from "./contexts/auth";
+import { PostProvider } from "./contexts/post";
+import { PostPage } from "./routes/Post";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/post/:id", element: <PostPage /> },
       { path: "*", element: <div>404</div> },
     ],
   },
@@ -41,7 +44,9 @@ function App() {
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <PocketBaseProvider>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <PostProvider>
+            <RouterProvider router={router} />
+          </PostProvider>
         </AuthProvider>
       </PocketBaseProvider>
     </MantineProvider>

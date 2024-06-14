@@ -48,7 +48,7 @@ export function Wrapper() {
         <Flex align="center" justify="space-between">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           {/* image the logo */}
-          <Box component={Link} to="/" visibleFrom="sm">
+          <Box component={Link} to="/" >
             <Image src={Logo} alt="logo" />
           </Box>
 
@@ -105,14 +105,18 @@ function NavbarOptions({
     <>
       {user ? (
         <>
-          <CreateModal></CreateModal>
+          <CreateModal toggle={toggle}></CreateModal>
           <ProfileButton opened={opened} user={user}></ProfileButton>
         </>
       ) : (
         <>
-          <Box component={Link} to="/login">
-            <Button onClick={() => opened && toggle()}>Login / Signup</Button>
-          </Box>
+          <Button
+            onClick={() => opened && toggle()}
+            component={Link}
+            to="/login"
+          >
+            Login / Signup
+          </Button>
         </>
       )}
     </>
@@ -135,7 +139,7 @@ function ProfileButton({ opened, user }: { opened: boolean; user: User }) {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label>Application</Menu.Label>
+          <Menu.Label>User</Menu.Label>
           <Menu.Item
             leftSection={
               <IconSettings style={{ width: rem(14), height: rem(14) }} />
