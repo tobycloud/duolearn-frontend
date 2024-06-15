@@ -1,13 +1,14 @@
 import { createTheme, MantineProvider } from "@mantine/core";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import { Wrapper } from "./components/wrapper";
-import { PocketBaseProvider } from "./contexts/pocketbase";
-import { HomePage } from "./routes/Home";
-import { LoginPage } from "./routes/Login";
+import { Wrapper } from "./components/Wrapper";
 import { AuthProvider } from "./contexts/auth";
+import { PocketBaseProvider } from "./contexts/pocketbase";
 import { PostProvider } from "./contexts/post";
-import { PostPage } from "./routes/Post";
+import { SignInPage } from "./pages/Auth/SignIn";
+import AuthWrapper from "./pages/Auth/Wrapper";
+import { HomePage } from "./pages/Home";
+import { PostPage } from "./pages/Post";
 
 const router = createBrowserRouter([
   {
@@ -15,10 +16,14 @@ const router = createBrowserRouter([
     element: <Wrapper />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/login", element: <LoginPage /> },
       { path: "/post/:id", element: <PostPage /> },
       { path: "*", element: <div>404</div> },
     ],
+  },
+  {
+    path: "/auth/",
+    element: <AuthWrapper />,
+    children: [{ path: "/auth/signin", element: <SignInPage /> }],
   },
 ]);
 const theme = createTheme({
@@ -41,7 +46,7 @@ const theme = createTheme({
 
 function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="light">
       <PocketBaseProvider>
         <AuthProvider>
           <PostProvider>

@@ -1,6 +1,6 @@
 import React from "react";
-import { usePocketBase } from "./pocketbase";
 import { User } from "../database/model";
+import { usePocketBase } from "./pocketbase";
 
 export interface AuthContextType {
   user: User | null;
@@ -9,7 +9,7 @@ export interface AuthContextType {
   setUser: (user: User | null) => void;
   userSignInOAuth2: (provider: string) => Promise<void>;
   getAvatar: (user: User) => string;
-  logout: () => void;
+  signout: () => void;
 }
 
 export const AuthContext = React.createContext<AuthContextType>({
@@ -19,7 +19,7 @@ export const AuthContext = React.createContext<AuthContextType>({
   setUser: () => {},
   userSignInOAuth2: () => Promise.resolve(),
   getAvatar: () => "",
-  logout: () => {},
+  signout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -46,8 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return pocketBase.getFileUrl(user, user.avatar);
   };
 
-  const logout = () => {
-    console.log("logout");
+  const signout = () => {
     pocketBase.authStore.clear();
     setUser(null);
     setToken(null);
@@ -68,14 +67,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setToken,
         userSignInOAuth2,
         getAvatar,
-
-        logout,
+        signout,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   return React.useContext(AuthContext);
 }

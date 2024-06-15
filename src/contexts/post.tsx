@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
+import { Comment, Post, User } from "../database/model";
 import { usePocketBase } from "./pocketbase";
-import { Post, Comment, User } from "../database/model";
 
 export type GetSinglePostResult = Post & {
   fullComments: Comment[];
@@ -21,6 +21,7 @@ export const PostContext = React.createContext<PostContextType>({
   setPosts: () => {},
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function usePost() {
   return React.useContext(PostContext);
 }
