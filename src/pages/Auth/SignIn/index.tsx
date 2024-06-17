@@ -41,7 +41,7 @@ export function SignInPage() {
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
-          Welcome back to DuoLearn!
+          Welcome back to Duolearn!
         </Title>
 
         <Text ta="center" mt="md">
@@ -117,7 +117,7 @@ export function SignInPage() {
             fw={700}
             onClick={(event) => event.preventDefault()}
           >
-            Register
+            Sign up
           </Anchor>
         </Text>
 

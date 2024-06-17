@@ -10,7 +10,7 @@ export default function ThreeDots() {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <IconDots />
+        <IconDots style={{ cursor: "pointer" }} />
       </Menu.Target>
 
       <Menu.Dropdown>

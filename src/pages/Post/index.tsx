@@ -1,4 +1,4 @@
-import { Container, Grid, Group, Text } from "@mantine/core";
+import { Box, Container, Grid, Group, Text, Title } from "@mantine/core";
 
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -83,12 +83,14 @@ export function PostPage() {
           </Group>
           {post && <PostCard.Post post={post}></PostCard.Post>}
           {post && post.fullComments && post.fullComments.length > 0 && (
-            <div>
-              <h3>Comments</h3>
+            <Box id="comments">
+              <Title order={3} mb="lg">
+                Comments
+              </Title>
               {post.fullComments.map((comment) => (
                 <CommentCard key={comment.id} comment={comment} />
               ))}
-            </div>
+            </Box>
           )}
         </Grid.Col>
         <Grid.Col span={{ base: 12, lg: 3 }}></Grid.Col>

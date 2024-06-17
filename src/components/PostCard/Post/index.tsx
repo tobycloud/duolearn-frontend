@@ -1,10 +1,8 @@
 import { Carousel } from "@mantine/carousel";
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Box,
-  Button,
   Card,
   Flex,
   Group,
@@ -13,13 +11,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconMessage,
-  IconShare,
-} from "@tabler/icons-react";
 import { Post } from "../../../database/model";
+import PostInteractionBar from "../../PostInteractionBar";
 import ThreeDots from "../../ThreeDots";
 
 export default function PostCardPost({ post }: { post: Post }) {
@@ -65,26 +58,7 @@ export default function PostCardPost({ post }: { post: Post }) {
             ))}
           </Carousel>
           <Space h="md" />
-          <Group>
-            <Button p="xs" variant="outline" radius="xl">
-              <Group gap="xs">
-                <IconChevronUp />
-                <Text>20</Text>
-              </Group>
-            </Button>
-            <Button p="xs" variant="outline" radius="xl">
-              <Group gap="xs">
-                <IconChevronDown />
-                <Text>5</Text>
-              </Group>
-            </Button>
-            <ActionIcon variant="outline" size="lg" radius="xl">
-              <IconMessage />
-            </ActionIcon>
-            <ActionIcon variant="outline" size="lg" radius="xl">
-              <IconShare />
-            </ActionIcon>
-          </Group>
+          <PostInteractionBar url="#comments" />
         </Flex>
       </Card.Section>
     </Card>
