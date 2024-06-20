@@ -1,24 +1,38 @@
-import {
-  ActionIcon,
-  Avatar,
-  Button,
-  Card,
-  Flex,
-  Group,
-  Text,
-} from "@mantine/core";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconMessage,
-  IconShare,
-} from "@tabler/icons-react";
+import { Avatar, Box, Card, Flex, Group, Text, Timeline } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { usePocketBase } from "../../contexts/pocketbase";
 import { Comment, User } from "../../database/model";
+import PostInteractionBar from "../PostInteractionBar";
 import ThreeDots from "../ThreeDots";
+import classes from "./index.module.css";
 
-export function CommentCard({ comment }: { comment: Comment }) {
+const mockdata = [
+  {
+    username: "pdteggman",
+    content: "<p>chat is this riel? btw this is hardcoded</p>",
+    elapsed: "8m",
+  },
+  {
+    username: "tobycm",
+    content:
+      "<p><span style='font-weight: 600'>@pdteggman</span> he cooked</p>",
+    elapsed: "7m",
+  },
+];
+
+// Comments & replies Notes
+// - Comments and replies cannot be shared/reposted.
+// - Comments and replies can be upvoted and downvoted. (althought I want to replace this feature with a heart button)
+// - Replies to comments are indented and they are all connected as a thread.
+
+export function CommentCard({
+  comment,
+  mock,
+}: {
+  comment: Comment;
+  mock?: boolean;
+}) {
   const pocketbase = usePocketBase();
   const [commentAuthor, setCommentAuthor] = useState<User>({
     avatar: "",
@@ -32,6 +46,8 @@ export function CommentCard({ comment }: { comment: Comment }) {
     username: "",
     verified: false,
   });
+
+  const [viewReplies, setViewReplies] = useState(false);
 
   useEffect(() => {
     if (!comment) return;
@@ -49,52 +65,76 @@ export function CommentCard({ comment }: { comment: Comment }) {
   return (
     <Card w="100%" shadow="sm" radius="md" mb="xl" display="flex" withBorder>
       <Card.Section>
-        <Flex m="md" direction="column">
-          <Flex justify="space-between">
-            <Group>
-              <Avatar />
-
-              <div style={{ flex: 1 }}>
-                <Text fw={500}>{commentAuthor.username}</Text>
-
-                <Text c="dimmed" size="xs">
-                  10 minutes ago
-                </Text>
-              </div>
-            </Group>
-            <ThreeDots />
-          </Flex>
-          <Text
-            dangerouslySetInnerHTML={{
-              __html: comment.content
-                .split("\n")[0]
-                .split(" ")
-                .slice(0, 10)
-                .join(" "),
-            }}
-          />
-          <div style={{ flexGrow: 1 }} />
-          <Group>
-            <Button p="xs" variant="outline" radius="xl">
-              <Group gap="xs">
-                <IconChevronUp />
-                <Text>20</Text>
-              </Group>
-            </Button>
-            <Button p="xs" variant="outline" radius="xl">
-              <Group gap="xs">
-                <IconChevronDown />
-                <Text>5</Text>
-              </Group>
-            </Button>
-            <ActionIcon variant="outline" size="lg" radius="xl">
-              <IconMessage />
-            </ActionIcon>
-            <ActionIcon variant="outline" size="lg" radius="xl">
-              <IconShare />
-            </ActionIcon>
+        <Timeline bulletSize={38} lineWidth={2} m="md">
+          <Timeline.Item bullet={<Avatar />}>
+            <Flex>
+              <Flex direction="column">
+                <Group gap="xs">
+                  <Text fw={600}>{commentAuthor.username}</Text>
+                  <Text c="dimmed" size="xs">
+                    10m
+                  </Text>
+                </Group>
+                <Text
+                  dangerouslySetInnerHTML={{
+                    __html: comment.content
+                      .split("\n")[0]
+                      .split(" ")
+                      .slice(0, 10)
+                      .join(" "),
+                  }}
+                />
+                <PostInteractionBar isComment />
+              </Flex>
+              <Box style={{ flexGrow: 1 }} />
+              <ThreeDots />
+            </Flex>
+          </Timeline.Item>
+        </Timeline>
+      </Card.Section>
+      <Card.Section ml="calc(var(--mantine-spacing-md) + 38px)">
+        <Timeline bulletSize={38} lineWidth={2} m="md">
+          {mock &&
+            viewReplies &&
+            mockdata.map((data, index) => (
+              <Timeline.Item bullet={<Avatar />} key={`temp_reply_${index}`}>
+                <Flex>
+                  <Flex direction="column">
+                    <Group gap="xs">
+                      <Text fw={600}>{data.username}</Text>
+                      <Text c="dimmed" size="xs">
+                        {data.elapsed}
+                      </Text>
+                    </Group>
+                    <Text
+                      dangerouslySetInnerHTML={{
+                        __html: data.content
+                          .split("\n")[0]
+                          .split(" ")
+                          .slice(0, 10)
+                          .join(" "),
+                      }}
+                    />
+                    <PostInteractionBar isComment />
+                  </Flex>
+                  <Box style={{ flexGrow: 1 }} />
+                  <ThreeDots />
+                </Flex>
+              </Timeline.Item>
+            ))}
+        </Timeline>
+        {mock && (
+          <Group gap="5" mb="md" className={classes.underlineOnHover}>
+            {!viewReplies ? (
+              <IconChevronDown size={18} color="var(--mantine-color-dimmed)" />
+            ) : (
+              <IconChevronUp size={18} color="var(--mantine-color-dimmed)" />
+            )}
+            <Text onClick={() => setViewReplies(!viewReplies)} c="dimmed">
+              {viewReplies ? "Hide" : "Show"} replies
+            </Text>
           </Group>
-        </Flex>
+        )}
       </Card.Section>
     </Card>
   );

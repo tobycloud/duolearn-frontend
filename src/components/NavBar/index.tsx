@@ -26,21 +26,21 @@ export default function Navbar() {
   return (
     <>
       <NavLink
-        p="md"
+        p="sm"
         label="Home" // personalized
         leftSection={<IconHome2 size="1rem" stroke={1.5} />}
         component={Link}
         to="/"
       />
       <NavLink
-        p="md"
+        p="sm"
         label="Popular"
         leftSection={<IconChartBar size="1rem" stroke={1.5} />}
         component={Link}
         to="/popular"
       />
       <NavLink
-        p="md"
+        p="sm"
         label="All"
         leftSection={<IconEye size="1rem" stroke={1.5} />}
         component={Link}
@@ -50,7 +50,7 @@ export default function Navbar() {
       <Divider my="md" mx="lg" />
 
       <NavLink
-        p="md"
+        p="sm"
         label="Communities"
         leftSection={<IconHome size="1rem" stroke={1.5} />}
         childrenOffset={28}
@@ -59,7 +59,7 @@ export default function Navbar() {
         {communities.map((community) => (
           <NavLink
             key={community.name}
-            p="md"
+            p="sm"
             label={community.name}
             component={Link}
             to={community.url}

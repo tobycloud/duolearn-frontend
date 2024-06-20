@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@mantine/core";
+import { Box, Card, Container, Grid, List, Text, Title } from "@mantine/core";
 import { useEffect } from "react";
 import PostCard from "../../components/PostCard";
 import { usePocketBase } from "../../contexts/pocketbase";
@@ -51,7 +51,18 @@ export function HomePage() {
             </Box>
           ))}
         </Grid.Col>
-        <Grid.Col span={{ base: 0, lg: 3 }}></Grid.Col>
+        <Grid.Col span={{ base: 0, lg: 3 }}>
+          <Card shadow="sm">
+            <Title order={5}>Notification (for example)</Title>
+            <List mt="sm">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <List.Item key={index}>
+                  <Text>something</Text>
+                </List.Item>
+              ))}
+            </List>
+          </Card>
+        </Grid.Col>
       </Grid>
     </Container>
   );

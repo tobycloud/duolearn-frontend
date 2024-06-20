@@ -8,7 +8,13 @@ import {
 import { Link } from "react-router-dom";
 import classes from "./index.module.css";
 
-export default function PostInteractionBar({ url }: { url: string }) {
+export default function PostInteractionBar({
+  url,
+  isComment,
+}: {
+  url?: string;
+  isComment?: boolean;
+}) {
   return (
     <Group>
       <Group wrap="nowrap" gap={0}>
@@ -42,9 +48,11 @@ export default function PostInteractionBar({ url }: { url: string }) {
           <IconMessage />
         </ActionIcon>
       )}
-      <ActionIcon variant="outline" size="lg" radius="xl">
-        <IconShare />
-      </ActionIcon>
+      {!isComment && (
+        <ActionIcon variant="outline" size="lg" radius="xl">
+          <IconShare />
+        </ActionIcon>
+      )}
     </Group>
   );
 }

@@ -25,7 +25,7 @@ export function PostCardHome({ post }: { post: Post }) {
               <Group>
                 <Avatar />
                 <Box>
-                  <Text fw={500}>{post.fullAuthor.username}</Text>
+                  <Text fw={600}>{post.fullAuthor.username}</Text>
                   <Text c="dimmed" size="xs">
                     10 minutes ago
                   </Text>

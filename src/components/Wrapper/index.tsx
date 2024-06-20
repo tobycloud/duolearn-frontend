@@ -16,7 +16,7 @@ export function Wrapper() {
       header={{ height: 70 }}
       p="md"
       navbar={{
-        width: 300,
+        width: 250,
         breakpoint: "md",
         collapsed: { mobile: !opened, desktop: isAuth },
       }}

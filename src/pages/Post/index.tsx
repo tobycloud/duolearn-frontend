@@ -1,4 +1,13 @@
-import { Box, Container, Grid, Group, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Card,
+  Container,
+  Grid,
+  Group,
+  List,
+  Text,
+  Title,
+} from "@mantine/core";
 
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -87,13 +96,30 @@ export function PostPage() {
               <Title order={3} mb="lg">
                 Comments
               </Title>
-              {post.fullComments.map((comment) => (
-                <CommentCard key={comment.id} comment={comment} />
+              {post.fullComments.map((comment, index) => (
+                <CommentCard
+                  key={comment.id}
+                  comment={comment}
+                  mock={index % 2 == 0}
+                />
               ))}
             </Box>
           )}
         </Grid.Col>
-        <Grid.Col span={{ base: 12, lg: 3 }}></Grid.Col>
+        <Grid.Col span={{ base: 0, lg: 3 }}>
+          <Card shadow="sm" mt="calc(var(--mantine-spacing-md) + 28.4px)">
+            <Title order={5}>
+              Information about this community (for example)
+            </Title>
+            <List mt="sm">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <List.Item key={index}>
+                  <Text>something</Text>
+                </List.Item>
+              ))}
+            </List>
+          </Card>
+        </Grid.Col>
       </Grid>
     </Container>
   );
