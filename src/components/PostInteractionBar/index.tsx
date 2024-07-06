@@ -10,10 +10,10 @@ import classes from "./index.module.css";
 
 export default function PostInteractionBar({
   url,
-  isComment,
+  replyingFn,
 }: {
   url?: string;
-  isComment?: boolean;
+  replyingFn?: () => void;
 }) {
   return (
     <Group>
@@ -44,11 +44,16 @@ export default function PostInteractionBar({
           <IconMessage />
         </ActionIcon>
       ) : (
-        <ActionIcon variant="outline" size="lg" radius="xl" onClick={() => {}}>
+        <ActionIcon
+          variant="outline"
+          size="lg"
+          radius="xl"
+          onClick={replyingFn}
+        >
           <IconMessage />
         </ActionIcon>
       )}
-      {!isComment && (
+      {url && (
         <ActionIcon variant="outline" size="lg" radius="xl">
           <IconShare />
         </ActionIcon>

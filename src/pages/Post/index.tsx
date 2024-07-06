@@ -1,7 +1,9 @@
 import {
   Box,
+  Button,
   Card,
   Container,
+  Divider,
   Grid,
   Group,
   List,
@@ -9,11 +11,12 @@ import {
   Title,
 } from "@mantine/core";
 
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CommentCard } from "../../components/CommentCard";
 import PostCard from "../../components/PostCard";
+import RTEComponent from "../../components/RichTextEditor";
 import { usePocketBase } from "../../contexts/pocketbase";
 import { GetSinglePostResult, usePost } from "../../contexts/post";
 import { Comment, Post } from "../../database/model";
@@ -25,6 +28,8 @@ export function PostPage() {
   const [post, setPost] = useState<GetSinglePostResult>();
 
   const navigate = useNavigate();
+
+  const [commentingBox, setCommentingBox] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -93,9 +98,42 @@ export function PostPage() {
           {post && <PostCard.Post post={post}></PostCard.Post>}
           {post && post.fullComments && post.fullComments.length > 0 && (
             <Box id="comments">
-              <Title order={3} mb="lg">
-                Comments
-              </Title>
+              <Divider my="xl" />
+              {commentingBox ? (
+                <Card w="100%" shadow="sm" radius="md" p="xl" withBorder>
+                  <Card.Section>
+                    <RTEComponent onCancel={() => setCommentingBox(false)} />
+                  </Card.Section>
+                </Card>
+              ) : (
+                <Card
+                  w="100%"
+                  shadow="sm"
+                  radius="md"
+                  p="xl"
+                  withBorder
+                  onClick={() => setCommentingBox(true)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Card.Section>
+                    <Text c="dimmed" lh={2}>
+                      Add a comment
+                    </Text>
+                  </Card.Section>
+                </Card>
+              )}
+              <Group my="xl" gap="xs">
+                <Text c="dimmed">Sort by:</Text>
+
+                {/* temp */}
+                <Button
+                  variant="light"
+                  radius="xl"
+                  rightSection={<IconChevronDown />}
+                >
+                  Newest
+                </Button>
+              </Group>
               {post.fullComments.map((comment, index) => (
                 <CommentCard
                   key={comment.id}
