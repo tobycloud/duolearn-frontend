@@ -1,6 +1,7 @@
 import "@mantine/carousel/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
+import "katex/dist/katex.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";

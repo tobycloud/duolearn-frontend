@@ -10,14 +10,22 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { Link, RichTextEditor } from "@mantine/tiptap";
 import { IconSend, IconTextResize, IconX } from "@tabler/icons-react";
+import { Mathematics } from "@tiptap-pro/extension-mathematics";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Highlight from "@tiptap/extension-highlight";
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import ts from "highlight.js/lib/languages/typescript";
+import { createLowlight } from "lowlight";
 import { useState } from "react";
 import { Link as ReactLink } from "react-router-dom";
+
+const lowlight = createLowlight();
+
+lowlight.register({ ts });
 
 export default function RTEComponent({
   onCancel,
@@ -30,12 +38,14 @@ export default function RTEComponent({
 }) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({ codeBlock: false }),
+      CodeBlockLowlight.configure({ lowlight }),
       Highlight,
       Underline,
       Superscript,
       SubScript,
       Link,
+      Mathematics,
     ],
   });
 
@@ -72,7 +82,7 @@ export default function RTEComponent({
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Strikethrough />
               <RichTextEditor.Highlight />
-              <RichTextEditor.Code />
+              <RichTextEditor.CodeBlock />
               <RichTextEditor.ClearFormatting />
             </RichTextEditor.ControlsGroup>
 
@@ -83,6 +93,8 @@ export default function RTEComponent({
               <RichTextEditor.Subscript />
               <RichTextEditor.Superscript />
             </RichTextEditor.ControlsGroup>
+
+            <RichTextEditor.ControlsGroup></RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Link />
